@@ -1,0 +1,38 @@
+.condition-text {
+    white-space: pre-line;
+}
+div, h1 {
+    max-width: 800px;
+    margin: 0px;
+}
+p {
+    max-width: 650px;
+}
+img {
+    width: 650px;
+    max-width: 100%;
+}
+ul {
+    margin: 0px;
+}
+li {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+/* mat-divider {
+    margin: 8px 0px;
+} */
+.author-name, .language {
+    display: inline;
+}
+.clickable {
+    cursor: pointer;
+}
+.close {
+    color: dimgray;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 60px;
+    line-height: 14px;
+}

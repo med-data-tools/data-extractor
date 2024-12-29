@@ -1,0 +1,28 @@
+<div class="dialog-box">
+    <div class="titlerow">
+        MediaViewer
+    </div>
+</div>
+
+
+<div *ngIf="mediaType==='image'" class="imageDiv">
+    <img class="imageDiv" [src]="mediaSrc" alt="Media" />
+</div>
+
+<div *ngIf="mediaType === 'audio'">
+    <audio [src]="mediaSrc" controls></audio>
+</div>
+
+<div *ngIf="mediaType === 'text'">
+    <div><b>Text contained in the file:</b></div>
+    <div class="textDiv">
+        {{mediaSrc}}
+    </div>
+    <br>
+</div>
+
+
+<div mat-dialog-actions>
+    <button mat-button (click)="closeDialog()">Close</button>
+</div>
+  

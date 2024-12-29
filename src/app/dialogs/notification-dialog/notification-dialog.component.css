@@ -1,0 +1,15 @@
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+button {
+  margin: 0px 4px;
+}
+h1 {
+  font-size: 18px;
+}
+div[mat-dialog-content] {
+  margin-top: -4px;
+  margin-bottom: 0px;
+}

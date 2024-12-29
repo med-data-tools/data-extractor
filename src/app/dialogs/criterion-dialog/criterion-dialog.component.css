@@ -1,0 +1,146 @@
+/* TODO: check later for unused attributes */
+
+.criterion-query, .title-row, .history {
+  min-width: 280px;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  margin: 0px 26px 0px 0px; /* top, right, bottom, left */
+}
+
+.title-row-button {
+  text-align: center;
+  display: inline;
+  width: 40px;
+  min-width: 40px;
+  height: 40px;
+  font-size: 24px;
+  color: darkgray;
+  vertical-align: middle;
+  padding: 0px;
+  margin: 0px;
+}
+
+.title {
+  max-width: 260px;
+}
+
+.criterion-query, .history {
+  margin: 24px;
+  display: flex-block;
+  margin-top: 0px;
+}
+
+/* .criterion-query-element {
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0px;
+  margin-bottom: 0px;
+} */
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: darkgray;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 24px;
+}
+
+.save-button {
+  margin-bottom: 8px;
+}
+
+mat-slider {
+  width: 120px;
+  margin-bottom: -20px;
+  pointer-events: none;
+}
+
+.slider-area {
+  margin-top: -20px;
+}
+
+.slider-min-max-value {
+  color: darkgray;
+  z-index: 1;
+  position: relative;
+}
+
+.slider-selected-value {
+  margin: -20px 8px;
+}
+
+.slider-reset {
+  margin: -20px 8px;
+  color: dimgray;
+  display: inline;
+}
+
+.number-input {
+  margin: 0px 12px 0px 0px;
+  width: 90px;
+  /*height: 56px; /* for highlighting only the form field; yet hard coded and thus ugly :( maybe change later */
+}
+
+/* .categorical-input {
+  height: 56px; /* for highlighting only the form field; yet hard coded and thus ugly :( maybe change later */
+/*} */
+
+.dash {
+  margin: 0px 2px 0px -10px;
+  display: inline-block;
+}
+
+.slider-button {
+  margin: 4px 0px 0px 8px;
+}
+
+.other-button {
+  margin: -10px 0px 0px 8px;
+}
+
+.highlighted {
+  transition: text-shadow 0.5s ease-in, background-color 0.5s ease-in;
+  background-color: #beff74;
+  text-shadow: darkgray 0.5px 0.5px 0.5px;
+  /* font-weight: bold */
+}
+
+.unhighlighted {
+  transition: text-shadow 0.5s ease-in, background-color 0.5s ease-in;
+  background-color: none;
+  text-shadow: none;
+}
+
+.redhighlighted {
+  transition: text-shadow 0.5s ease-in, background-color 0.5s ease-in;
+  background-color: red;
+  text-shadow: darkgray 0.5px 0.5px 0.5px;
+  /* font-weight: bold */
+}
+
+.unredhighlighted {
+  transition: text-shadow 0.5s ease-in, background-color 0.5s ease-in;
+  background-color: none;
+  text-shadow: none;
+}
+
+.insert-time-row {
+  margin-top: 12px;
+}
+
+.date-picker {
+  width: 160px;
+}
+
+.time-picker {
+  width: 80px;
+}

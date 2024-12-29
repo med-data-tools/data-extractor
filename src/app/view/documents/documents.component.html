@@ -1,0 +1,103 @@
+<div class="documents-container">
+  <div class="tag-container">
+    <mat-form-field appearance="outline" class="select-form-field">
+      <mat-label>Analysis</mat-label>
+      <mat-select *ngIf="!trialsSetting" [(ngModel)]="selectedTagName" (selectionChange)="onStateGroupTagChange()">
+          <mat-option *ngFor="let tag of stateGroupTags" [value]="tag.name">{{tag.name}}</mat-option>
+      </mat-select>
+      <mat-select *ngIf="trialsSetting" [(ngModel)]="selectedTagName" (selectionChange)="onTrialTagChange()">
+        <mat-option *ngFor="let tag of getParentTagsOfTrials()" [value]="tag.name">{{tag.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+
+
+  <ng-container *ngFor="let doc of getDocumentsAndCombinedDocument()">
+
+    <ng-container *ngIf="doc === combinedDocument">
+      <mat-divider class="separator"></mat-divider>
+    </ng-container>
+
+    <div class="document" 
+        [ngClass]="{'active-document': activeDocument === doc.id}"
+        (click)="changeActiveDocument(doc.id, $event)"
+        [attr.draggable]="doc !== combinedDocument ? 'true' : null"
+        (dragstart)="onDragStart($event, doc.id)" 
+        (dragover)="onDragOver($event)" 
+        (drop)="onDrop($event, doc.id)">
+      <div class="document-header">
+        <div class="document-title">
+          {{ doc.title }}&nbsp;
+          <span class="additional-info">({{ doc.getCriteriaValues().getAllSetCriteria().length }}/{{ doc.criteria.length }})</span>
+          <button mat-icon-button class="edit-button" (click)="openAddDocumentDialog(doc.id)" *ngIf="doc !== combinedDocument">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button class="chat-button" (click)="openChatOfDoc()" *ngIf="doc !== combinedDocument">
+            <mat-icon>chat</mat-icon>
+          </button>
+          <button mat-icon-button class="delete-button" (click)="deleteDocumentWithConfirmation(doc.id); $event.stopPropagation()" *ngIf="doc !== combinedDocument">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div class="document-body" (click)="$event.stopPropagation()">
+        <!-- StateGroups -->
+        <ng-container *ngIf="trialsSetting === false">
+          <mat-expansion-panel class="document-tabs" *ngFor="let group of getVisibleStateGroups()">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ group.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="states">
+              <div class="criterion-title">States:</div>
+              <ng-container *ngFor="let state of group.states">
+                <button mat-button class="state" [ngClass]="{'confirmed': isConfirmed(doc.id, group, state), 'impossible': isImpossible(doc.id, group, state)}" (click)="openStateDialog(doc.id, state, group)">{{ state.name }}</button>
+              </ng-container>
+              <app-criteria-listing
+                [criteriaValues]="doc.getCriteriaValues()"
+                [document]="doc"
+                [criteria]="getRelevantCriteria(doc, group)"
+                (updateCriterion)="updateCriterion($event[0], $event[1], $event[2], $event[3], $event[4])">
+              </app-criteria-listing>
+            </div>
+          </mat-expansion-panel>
+        </ng-container>
+        <!-- Trials -->
+        <ng-container *ngIf="trialsSetting">
+          <mat-expansion-panel class="document-tabs" *ngFor="let tag of getVisibleTrialTags()">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{ tag.name }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="states">
+              <div class="criterion-title">States:</div>
+              <ng-container *ngFor="let trial of getTrialsWithTag(tag)">
+                <button mat-button class="state" [ngClass]="{'confirmed': trialIsConfirmed(doc.id, trial), 'impossible': trialIsImpossible(doc.id, trial)}" (click)="openTrialDialog(doc.id, trial)">{{ trial.name }}</button>
+              </ng-container>
+              <app-criteria-listing
+                [criteriaValues]="doc.getCriteriaValues()"
+                [document]="doc"
+                [criteria]="getRelevantCriteriaForTrialTag(doc, tag)"
+                (updateCriterion)="updateCriterion($event[0], $event[1], $event[2], $event[3], $event[4])">
+              </app-criteria-listing>
+            </div>
+          </mat-expansion-panel>
+        </ng-container>
+      </div>
+    </div>
+
+    <!-- after the last (non-combined) document, add the 'add' button -->
+    <button *ngIf="doc === this.documents[this.documents.length - 1]" mat-icon-button class="add-document-button" (click)="openAddDocumentDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+
+  </ng-container>
+
+  <!-- ... or if there are no documents at all -->
+  <button *ngIf="this.documents.length === 0" mat-icon-button class="add-document-button" (click)="openAddDocumentDialog()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

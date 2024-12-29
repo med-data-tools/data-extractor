@@ -1,0 +1,12 @@
+<div class="dialog-header">
+  <h1 mat-dialog-title>{{ data.title }}</h1>
+  <button mat-icon-button (click)="onClose()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>{{ data.message }}</div>
+<div mat-dialog-actions>
+  <button mat-button cdkFocusInitial mat-dialog-close *ngIf="!data.isConfirm">OK</button>
+  <button mat-button cdkFocusInitial (click)="onConfirm(true)" *ngIf="data.isConfirm">Yes</button>
+  <button mat-button (click)="onConfirm(false)" *ngIf="data.isConfirm">No</button>
+</div>

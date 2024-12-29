@@ -1,0 +1,107 @@
+<button class="close" mat-button (click)="onNoClick()">&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;</button>
+<h1 mat-dialog-title>Publikation: {{data.publication.name}}</h1>
+<div mat-dialog-content>
+    <mat-divider></mat-divider>
+    <!-- <mat-expansion-panel *ngIf="data.publication.description != undefined && data.publication.getDescription(data.document.getCriteriaValues()).length > 1" class="description-text" [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Beschreibung:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [innerHtml]="data.publication.getDescription(data.document.getCriteriaValues()) | safeHtml" #description></div>
+    </mat-expansion-panel> -->
+    <mat-expansion-panel class="base-info" [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Basic info:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- In Case Publication should extract info from PubMed -->
+        <div *ngIf="data.publication.publicationInfo.title != undefined">
+            <p *ngIf="data.publication.publicationInfo.title != undefined && data.publication.publicationInfo.title != ''">
+                <b>Title:</b> {{data.publication.publicationInfo.title}}
+            </p>
+            <div *ngIf="data.publication.publicationInfo.authors != undefined && data.publication.publicationInfo.authors.length > 0">
+                <b>Authors: </b>
+                <i *ngFor="let authorname of data.publication.publicationInfo.authors" class="author-name">{{authorname + (authorname == data.publication.publicationInfo.authors[data.publication.publicationInfo.authors.length] ? "" : ", ")}}</i>
+            </div>
+            <p *ngIf="data.publication.publicationInfo.journalName != undefined && data.publication.publicationInfo.journalName != ''">
+                <b>Journal:</b> {{data.publication.publicationInfo.journalName}}
+            </p>
+            <p *ngIf="data.publication.publicationInfo.publicationDate != undefined && data.publication.publicationInfo.publicationDate != ''">
+                <b>Publication date:</b> {{data.publication.publicationInfo.publicationDate}}
+            </p>
+            <div *ngIf="data.publication.publicationInfo.language != undefined && data.publication.publicationInfo.language.constructor.name=='Array' && data.publication.publicationInfo.language.length > 0">
+                <b>Language:</b><p *ngFor="let language of data.publication.publicationInfo.language" class="language">
+                    {{language + (language == data.publication.publicationInfo.language[data.publication.publicationInfo.language.length] ? "" : ", ")}}
+                </p>
+            </div>
+            <p *ngIf="data.publication.publicationInfo.publicationLand != undefined && data.publication.publicationInfo.publicationLand != ''">
+                <b>Country:</b> {{data.publication.publicationInfo.publicationLand}}
+            </p>
+            <p *ngIf="data.publication.pmid != undefined && data.publication.pmid != ''">
+                <b>PMID: </b> <a href="https://pubmed.ncbi.nlm.nih.gov/{{data.publication.pmid}}/" target="_blank" rel="noopener noreferrer">{{data.publication.pmid}}</a>
+            </p>
+            <div *ngIf="getAssociatedTrialsOfPublication(data.publication,data.allTrials).length>0">
+                <b>Associated trials:</b>
+                <b class="clickable" *ngFor="let trial of getAssociatedTrialsOfPublication(data.publication,data.allTrials)" (click)="switchToAssociatedTrialInfoDialog(trial,data.allTrials,data.document)" [ngStyle]="{'color':'grey'}">&nbsp;&nbsp;&nbsp;&nbsp;{{trial.name}} </b>
+            </div>
+        </div>
+        <!-- In Case Publication should not extract info from PubMed -->
+        <div *ngIf="data.publication.publicationInfo.title == undefined">
+            <p *ngIf="data.publication.title != undefined && data.publication.title != ''">
+                <b>Title:</b> {{data.publication.title}}
+            </p>
+            <div *ngIf="data.publication.authors != undefined && data.publication.authors.length > 0">
+                <b>Authors: </b>
+                <i *ngFor="let authorname of data.publication.authors" class="author-name">{{authorname + (authorname == data.publication.authors[data.publication.authors.length] ? "" : ", ")}}</i>
+            </div>
+            <p *ngIf="data.publication.journalName != undefined && data.publication.journalName != ''">
+                <b>Journal:</b> {{data.publication.journalName}}
+            </p>
+            <p *ngIf="data.publication.publicationDate != undefined && data.publication.publicationDate != ''">
+                <b>Publication date:</b> {{data.publication.publicationDate}}
+            </p>
+            <div *ngIf="data.publication.language != undefined  && data.publication.language.constructor.name=='Array'&& data.publication.language.length > 0">
+                <b>Language:</b><p *ngFor="let language of data.publication.language" class="language">{{language + (language == data.publication.language[data.publication.language.length] ? "" : ", ")}}</p>
+            </div>
+            <p *ngIf="data.publication.publicationLand != undefined && data.publication.publicationLand != ''">
+                <b>Country:</b> {{data.publication.publicationLand}}
+            </p>
+            <p *ngIf="data.publication.pmid != undefined && data.publication.pmid != ''">
+                <b>PMID: </b> <a href="https://pubmed.ncbi.nlm.nih.gov/{{data.publication.pmid}}/" target="_blank" rel="noopener noreferrer">{{data.publication.pmid}}</a>
+            </p>
+            
+            <div *ngIf="getAssociatedTrialsOfPublication(data.publication,data.allTrials).length>0">
+                <b>Associated trials:</b>
+                <b class="clickable" *ngFor="let trial of getAssociatedTrialsOfPublication(data.publication,data.allTrials)" (click)="switchToAssociatedTrialInfoDialog(trial,data.allTrials,data.document)" [ngStyle]="{'color':'grey'}">&nbsp;&nbsp;&nbsp;&nbsp;{{trial.name}} </b>
+            </div>
+        </div>
+    </mat-expansion-panel>
+
+
+
+
+    <mat-expansion-panel *ngIf="data.publication.relevantForSituationCondition != undefined" class="condition-text" [expanded]="false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Conditions:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [innerHtml]="data.publication.relevantForSituationCondition.toColorCodedHtmlString(data.document.getCriteriaValues()) | safeHtml"></div>
+    </mat-expansion-panel>
+
+    <!-- <mat-expansion-panel class="tags-list" [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Tags:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngIf="data.publication.tags != undefined">
+            <p *ngFor="let tag of data.publication.tags">{{tag.name}}</p>
+        </div>
+        <div *ngIf="data.publication.tags == undefined">
+            <p>-- keine --</p>
+        </div>
+    </mat-expansion-panel> -->
+</div>

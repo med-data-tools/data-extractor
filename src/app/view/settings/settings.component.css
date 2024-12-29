@@ -1,0 +1,39 @@
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  max-width: 400px; /* Set a max width for better readability */
+  margin: 0 auto; /* Center the form on the page */
+}
+
+.form-field {
+  width: 100%; /* Full width for all form fields */
+}
+
+.current-guideline-label {
+  font-weight: bold;
+  margin-bottom: 120px;
+}
+
+.view-mode {
+  display: flex;
+  flex-direction: column;
+  gap: 8px; /* Space between label and radio group */
+}
+
+.view-mode-label {
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.mat-radio-group {
+  display: flex;
+  gap: 16px; /* Space between the radio buttons */
+  align-items: center;
+}
+
+.button-container {
+  display: flex;
+  justify-content: flex-end; /* Align the button to the right */
+}

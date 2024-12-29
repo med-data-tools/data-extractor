@@ -1,0 +1,22 @@
+.dialog-box {
+    min-width: 280px;
+    margin: 24px;
+    display: flex-block;
+}
+
+
+.titlerow {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    font-size: 30px;
+}
+
+
+
+
+.imageDiv {
+    max-width: none; /* Ensure the image does not resize to fit the container */
+    height: auto; /* Maintain the aspect ratio */
+    overflow-x: scroll;
+}

@@ -1,0 +1,53 @@
+<div class="main-container">
+  <div class="toolbar-container">
+    <mat-toolbar color="primary">
+      <span>Medical Data Extractor and Analyzer</span>
+    </mat-toolbar>
+  </div>
+
+  <div class="tab-container">
+    <mat-tab-group mat-align-tabs="center" (swipeleft)="onSwipe('left')" (swiperight)="onSwipe('right')" [(selectedIndex)]="selectedTabIndex">
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="tab-label-content">
+            <!-- <mat-icon svgIcon="pencil" matTooltip="Input"></mat-icon> -->
+            <mat-icon matTooltip="Input" class="header-icon">chat_bubble</mat-icon>
+            <span>Input</span>
+          </div>
+        </ng-template>
+        <div class="tab-content">
+          <app-input #appInput (updateCriterionEvent)="updateCriterionValue($event[0],$event[1],$event[2], undefined, $event[3])" (setCriterionValueInDocument)="updateCriterionValue($event[0],$event[1],$event[2],$event[3])" [documentsComponent]="appDocuments"></app-input>
+        </div>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="tab-label-content">
+            <!-- <mat-icon svgIcon="folder" matTooltip="Documents"></mat-icon> -->
+            <mat-icon matTooltip="Documents" class="header-icon">my_library_books</mat-icon>
+            <span>Documents</span>
+          </div>
+        </ng-template>
+        <app-documents #appDocuments (changeTab)="this.selectedTabIndex = $event"></app-documents>
+      </mat-tab>
+      <!-- <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="tab-label-content">
+            <mat-icon svgIcon="patient" matTooltip="Patients"></mat-icon>
+            <span>Patients</span>
+          </div>
+        </ng-template>
+        <app-patients></app-patients>
+      </mat-tab> -->
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="tab-label-content">
+            <!-- <mat-icon svgIcon="tools" matTooltip="Settings"></mat-icon> -->
+            <mat-icon matTooltip="Settings" class="header-icon">settings</mat-icon>
+            <span>Settings</span>
+          </div>
+        </ng-template>
+        <app-settings #settings (ping)="updateSettings($event.fileToTextServerAddress, $event.llmServerAddress, $event.key, $event.showTrials, $event.guidelineIndex)"></app-settings>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

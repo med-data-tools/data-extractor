@@ -1,0 +1,77 @@
+
+<input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)" multiple>
+
+<div class="chat-container">
+  <div class="document-select-container">
+    <mat-form-field appearance="outline" class="select-form-field">
+      <mat-label>Documents</mat-label>
+      <mat-select [ngModel]="getActiveDocumentAndUpdateChat()" (selectionChange)="onDocChange($event)">
+        <mat-option *ngFor="let d of getDocuments()" [value]="d">{{d.title}}</mat-option>
+          <!-- <mat-option [value]="null">General</mat-option> -->
+          <!-- <mat-option>{{ STRING_FOR_UNDEFINED_CRITERION_VALUE() }}</mat-option> -->
+          <!-- <mat-option *ngFor="let c of data.criterion.getCategoricalCriterion()?.valueNames" [value]="c" [disabled]="!categoricalValues.includes(c)">{{c}}</mat-option> -->
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="chat-window" #chatWindow>
+    <mat-list>
+      <mat-list-item *ngFor="let message of messages">
+        <div class="message-container" [ngClass]="{'mine': message.sender === 'me', 'theirs': message.sender !== 'me'}">
+          <div class="message">
+            <!-- different types of messages checked with ngIf -->
+            <ng-container *ngIf="message.text.length > 0">{{message.text}}<button mat-stroked-button *ngIf="message.buttonText" (click)="showChatButtonText(message)">Show</button></ng-container>
+            <ng-container *ngIf="message.fileType === 'image'">
+              <img [src]="message.fileUrl" alt="Image" style="width: 800px; max-width: 100%;" (click)="openImageDialog(message.fileUrl)">
+            </ng-container>
+            <ng-container *ngIf="message.fileType === 'pdf'">
+              <a [href]="message.fileUrl" [download]="message.fileName" target="_blank" download>
+                <mat-icon style="font-size: 40px; width: 48px; height: 48px;">picture_as_pdf</mat-icon>
+                <p>{{ message.fileName }}</p>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="message.fileType === 'unknown'">
+              <a [href]="message.fileUrl" [download]="message.fileName" target="_blank" download>
+                <mat-icon style="font-size: 40px; width: 48px; height: 48px;">insert_drive_file</mat-icon>
+                <p>{{ message.fileName }}</p>
+              </a>
+            </ng-container>
+            <ng-container *ngIf="message.fileType === 'audio'">
+              <audio [src]="message.fileUrl" controls></audio>
+            </ng-container>
+            <app-criteria-listing
+              *ngIf="message.extractedValues !== undefined"
+              [criteriaValues]="message.extractedValues"
+              [document]="getActiveDocument()"
+              [criteria]="message.extractedValues.getAllSetCriteria()"
+              [isInChatWindow]="true"
+              (updateCriterion)="updateCriterionEvent.emit([$event[1], $event[2], $event[3], $event[4]])">
+            </app-criteria-listing>
+          </div>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </div>
+
+  <div class="chat-input">
+   
+    <button mat-icon-button class="icon-button" (click)="fileButtonClicked()">
+      <mat-icon>insert_drive_file</mat-icon>
+    </button>
+    <!-- <button mat-icon-button class="icon-button" (click)="cameraButtonClicked()">
+      <mat-icon>photo_camera</mat-icon>
+    </button> -->
+    <button mat-icon-button  class="icon-button" [ngClass]="{'recordingOngoing': micMode === 'audio'}" (click)="micButtonClicked()">
+      <mat-icon>mic</mat-icon>
+    </button>
+    <mat-form-field class="text-input" appearance="outline">
+      <ng-container>
+        <button *ngIf="newMessage.tag=='textExtraction'" class="tag-button">TextExtraction</button>
+        <textarea matInput #inputField placeholder="Type a message" [(ngModel)]="newMessage.text" (ngModelChange)="onInputChange($event)" (keydown)="onKeydown($event)" (keyup.enter)="sendMessage()" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="6"></textarea>
+      </ng-container>
+    </mat-form-field>
+    <button mat-icon-button class="icon-button" (click)="sendMessage()">
+      <mat-icon>send</mat-icon>
+    </button>
+  </div>
+</div>

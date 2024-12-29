@@ -1,0 +1,22 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-mdc-tab-body-wrapper { flex-grow: 1; } /* make tabs in main view full height (jz: 2024-07-29) */
+
+/* the following changes shall only be applied to input-component (jz: 2024-07 and 2024-09) */
+.chat-input .mat-mdc-form-field-subscript-wrapper {
+  height: 0px;
+}
+.chat-input .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix, .document-select-container .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix, .tag-container .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+.chat-input .mat-mdc-form-field-infix, .document-select-container .mat-mdc-form-field-infix, .tag-container .mat-mdc-form-field-infix {
+  min-height: 40px;
+}
+.chat-input .mat-mdc-icon-button.mat-mdc-button-base {
+  width: 32px;
+  height: 32px;
+}

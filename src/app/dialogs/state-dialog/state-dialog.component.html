@@ -1,0 +1,30 @@
+<h3 mat-dialog-title class="title">State: {{data.state.name}}</h3>
+<div mat-dialog-content>
+    <mat-expansion-panel *ngIf="data.state.description != undefined && data.state.getDescription(data.criteriaValues).length > 0" class="description-text" [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Info:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [innerHtml]="data.state.getDescription(data.criteriaValues) | safeHtml" #description></div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="data.state.condition != undefined" class="condition-text">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Conditions:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [innerHtml]="data.state.condition.toColorCodedHtmlString(data.criteriaValues) | safeHtml"></div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="data.state.numerical != undefined" class="state-value-text">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Calculation:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [innerHtml]="data.state.numerical.toString() | safeHtml"></div>
+    </mat-expansion-panel>
+</div>
+<button class="close" mat-icon-button (click)="onNoClick()"><mat-icon>close</mat-icon></button>

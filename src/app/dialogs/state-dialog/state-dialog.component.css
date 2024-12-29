@@ -1,0 +1,19 @@
+.condition-text {
+    white-space: pre-line;
+}
+div {
+    max-width: 800px;
+    margin: 0px;
+}
+.clickable {
+    cursor: pointer;
+}
+.title {
+    margin-right: 26px; /* keep empty space for the close button */
+}
+.close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    color: darkgray;
+}

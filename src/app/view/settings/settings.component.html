@@ -1,0 +1,46 @@
+<div class="settings-container">
+  <mat-form-field class="form-field">
+    <mat-label>File-to-Text Conversion Server Address</mat-label>
+    <input matInput [(ngModel)]="fileToTextServerAddress" placeholder="Type in File-to-Text Server address">
+  </mat-form-field>
+
+  <mat-form-field class="form-field">
+    <mat-label>LLM Server Address</mat-label>
+    <input matInput [(ngModel)]="llmServerAddress" placeholder="Type in LLM Server address">
+  </mat-form-field>
+
+  <!-- <mat-form-field class="form-field">
+    <mat-label>Key</mat-label>
+    <input matInput #keyInputField placeholder="Type in ML Key">
+  </mat-form-field> -->
+
+  <!-- <mat-checkbox [(ngModel)]="trials">Trials</mat-checkbox> -->
+  
+  <div>
+    <label class="current-guideline-label">Currently loaded guideline: {{ currentlyLoadedGuidelineIndex + 1 }}</label> <!--{{ currentlyLoadedGuidelineName }}</label>-->
+  </div>
+  
+  <mat-form-field class="form-field">
+    <mat-label>Guideline Number</mat-label>
+    <mat-select [(ngModel)]="guidelineIndex">
+      <ng-container *ngFor="let number of [].constructor(numberOfGuidelines); let i = index">
+        <mat-option [value]="i">{{ i + 1 }}</mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="view-mode">
+    <label class="view-mode-label">View Mode:</label>
+    <mat-radio-group [(ngModel)]="trials">
+      <mat-radio-button [value]="false">Guidelines</mat-radio-button>
+      <mat-radio-button [value]="true">Trials</mat-radio-button>
+    </mat-radio-group>
+  </div>
+
+  <div class="button-container">
+    <button mat-raised-button color="primary" (click)="saveSettings()"> <!-- saveSettings(serverAddressInputField.value, keyInputField.value, trials)">-->
+      Save
+    </button>
+  </div>
+</div>
+  

@@ -1,0 +1,60 @@
+:root {
+  --vh: 100vh; /* Initialwert für vh */
+}
+
+.header-icon {
+  font-size: 30px;
+  margin-top: 20px;
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  height: var(--vh);
+  overflow: hidden;
+}
+
+.tab-container {
+  flex: 1;
+  overflow: hidden;
+}
+
+mat-tab-group {
+  height: 100%;
+  overflow: hidden;
+}
+
+.tab-content {
+  height: 100%;
+  overflow: hidden;
+}
+
+app-input {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Icons vergrößern */
+mat-icon {
+  width: 48px;
+  height: 48px;
+}
+
+/* Zentriere den Inhalt der Tabs */
+.tab-label-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Standardmäßig den Text neben den Icons anzeigen */
+.tab-label-content span {
+  margin-left: 8px;
+}
+
+/* Für kleinere Bildschirme den Text ausblenden */
+@media (max-width: 800px) {
+  .tab-label-content span {
+    display: none;
+  }
+}

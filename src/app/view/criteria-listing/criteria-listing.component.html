@@ -1,0 +1,15 @@
+<div class="all-criteria">
+  <div *ngIf="!isInChatWindow" class="criterion-title">Criteria:</div>
+  <ng-container *ngFor="let criterion of this.criteria ?? []">
+    <button mat-button class="criterion set-criterion" *ngIf="isSet(criterion)" (click)="openCriterionDialog(criterion)">
+      <span [ngClass]="getDotClass(criterion)">•</span>
+      {{ criterion.name }}: {{ getCriterionValueAsString(criterion) }}
+      <span *ngIf="getNumberOfEntriesInHistory(criterion) > 1" class="number-of-entries-counter">(+{{ getNumberOfEntriesInHistory(criterion) - 1 }}) </span>
+      <span *ngIf="document == undefined || document.id !== 0" class="unset-criterion-button" (click)="unsetCriterion(criterion, $event)">X</span>
+    </button>
+  </ng-container>
+
+  <ng-container *ngFor="let criterion of this.criteria ?? []">
+    <button class="criterion unset-criterion" *ngIf="!isSet(criterion)" mat-button (click)="openCriterionDialog(criterion)">{{ criterion.name }}</button>
+  </ng-container>
+</div>

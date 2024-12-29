@@ -1,0 +1,130 @@
+<div class="title-row">
+    <!--<div class="criterion-query-element">(click)="openCriterionInfoDialog()" matTooltip="{{data.criterion.name}}:&nbsp;
+    {{criterion.getPlainDescription().length > CRITERION_TOOLTIP_CHARACTERS_PREVIEW() ? criterion.getPlainDescription().slice(0, CRITERION_TOOLTIP_CHARACTERS_PREVIEW()) + '...' : criterion.getPlainDescription() }} 
+    &nbsp;Für mehr Information klicken."-->
+        <h3 mat-dialog-title class="title">{{data.criterion.name}} &nbsp;
+        <small>{{data.criterion.shortDescription != "" ? data.criterion.shortDescription : data.criterion.getDescription().length &lt; CRITERION_SHORT_DESCRIPTION_MAX_LENGTH() ? data.criterion.getDescription() : ""}}</small>
+        </h3>
+    <!-- </div> -->
+    <button  *ngIf="data.canChangeEntry && isNumerical" class="title-row-button other-button" mat-stroked-button (click)="toggleMultiSelect()" matTooltip="{{isMultiSelect ? 'Zahl eingeben' : 'Bereich eingeben'}}">
+        {{isMultiSelect ? '\u21CE' : '\u21D4'}}
+    </button>
+
+    <!-- TODO: re-add option to insert time-->
+
+    <!-- <button class="title-row-button other-button" mat-stroked-button (click)="toggleInsertTime()" matTooltip="{{insertTime ? 'keine Zeit angeben' : 'Zeit der Messung zufügen'}}">
+        {{insertTime ? '\u2205' : '\u231A'}}
+    </button> -->
+    <!-- The close (X) button in the top-right corner -->
+</div>
+<div *ngIf="data.canChangeEntry" class="criterion-query">
+    <div *ngIf="!isNumerical && !isMultiSelect" class="criterion-query-element">
+        <mat-form-field class="categorical-input" appearance="outline">
+            <!-- <mat-label>{{data.criterion.name}}</mat-label> -->
+            <mat-select cdkFocusInitial [(ngModel)]="selectedValue">
+                <!-- <mat-option>{{ STRING_FOR_UNDEFINED_CRITERION_VALUE() }}</mat-option> -->
+                <mat-option [value]="">-- unknown --</mat-option>
+                <mat-option *ngFor="let c of data.criterion.getCategoricalCriterion()?.valueNames" [value]="c" [disabled]="!categoricalValues.includes(c)">{{c}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div *ngIf="!isNumerical && isMultiSelect" class="criterion-query-element">
+        <mat-form-field class="categorical-input" appearance="outline">
+            <!-- <mat-label>{{data.criterion.name}}</mat-label> -->
+            <mat-select cdkFocusInitial [(ngModel)]="selectedValue" multiple>
+                <mat-option *ngFor="let c of data.criterion.getCategoricalCriterion()?.valueNames" [value]="c" [disabled]="!categoricalValues.includes(c)">{{c}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div *ngIf="isNumerical" class="criterion-query-element">
+        <div>
+            <ng-container *ngIf="!isMultiSelect">
+                <mat-form-field class="number-input" appearance="outline">
+                    <input matInput cdkFocusInitial type="number" [(ngModel)]="selectedValue"><!-- placeholder="{{data.criterion.name}} auswählen" -->
+                </mat-form-field>
+                <!-- <div class="slider-area">
+                    <label class="slider-min-max-value">{{formatLabel(minValue)}}</label>
+                    <mat-slider
+                        ngDefaultControl
+                        disabled=false
+                        [max]="maxValue"
+                        [min]="minValue"
+                        thumbLabel=true
+                        showTickMarks discrete 
+                        [step]="stepWidth"
+                        [(ngModel)]="selectedValue"
+                        [displayWith]="formatLabel"
+                        #slider><input matSliderThumb #sliderThumb/>
+                    </mat-slider>
+                    <label class="slider-min-max-value">{{formatLabel(maxValue)}}</label>
+                </div> -->
+            </ng-container>
+            <ng-container *ngIf="isMultiSelect">
+                <mat-form-field class="number-input" appearance="outline">
+                    <input matInput cdkFocusInitial type="number" [(ngModel)]="selectedValueAsRange().start"><!-- placeholder="{{data.criterion.name}} auswählen" -->
+                </mat-form-field>
+                <p class="dash">–</p>
+                <mat-form-field class="number-input" appearance="outline">
+                    <input matInput type="number" [(ngModel)]="selectedValueAsRange().end"><!-- placeholder="{{data.criterion.name}} auswählen" -->
+                </mat-form-field>
+                <!-- <div class="slider-area">
+                    <label class="slider-min-max-value">{{formatLabel(minValue)}}</label>
+                    <mat-slider
+                        ngDefaultControl
+                        disabled=false
+                        [max]="maxValue"
+                        [min]="minValue"
+                        thumbLabel=true
+                        showTickMarks discrete 
+                        [step]="stepWidth"
+                        [displayWith]="formatLabel"
+                        #rangeSlider>
+                        <input [(ngModel)]="selectedValueAsRange().start" matSliderStartThumb #sliderStartThumb>
+                        <input [(ngModel)]="selectedValueAsRange().end" matSliderEndThumb #sliderEndThumb>
+                    </mat-slider>
+                    <label class="slider-min-max-value">{{formatLabel(maxValue)}}</label>
+                </div> -->
+            </ng-container>
+            <!-- min and max value in case we don't have a slider -->
+            <ng-container>
+                <label class="slider-min-max-value">{{formatLabel(minValue)}}</label>
+                <label class="slider-min-max-value">–</label>
+                <label class="slider-min-max-value">{{formatLabel(maxValue)}}</label>
+            </ng-container>
+
+            
+            <!-- The following block is for showing/hiding a single slider of a single criterion; this option was de-activated for a slimer view of a numerical criterion (only option is now to show/hide globally all sliders) -->
+            <!-- <button *ngIf="isNumerical" class="title-row-button slider-button" mat-stroked-button (click)="toggleShowSlider($event)">
+                {{showSlider ? '–' : '+'}}
+            </button> -->
+        </div>
+    </div>
+
+    <!-- TODO: re-add option to insert time-->
+
+    <!-- <div *ngIf="insertTime" class="insert-time-row">
+        <mat-form-field appearance="fill" class="date-picker">
+            <mat-label>Datum:</mat-label>
+            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate" (dateChange)="changedTime()">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="time-picker">
+            <mat-label>Uhrzeit:</mat-label>
+            <input matInput [(ngModel)]="selectedTime" (ngModelChange)="changedTime()" type="time">
+        </mat-form-field>
+        <button class="title-row-button other-button" mat-stroked-button (click)="storeCurrentEntry()" matTooltip="Wert festhalten und neuen Wert eingeben">
+            {{'\u21E9'}}
+        </button>
+    </div> -->
+</div>
+
+<div class="history" *ngIf="data.viewHistory && (data.values.getAllEntries(data.criterion).size() > 1 || !data.values.isUndefined(data.criterion))">
+    <h4>History:</h4>
+    <p style="white-space: pre-line;">{{data.values.getListAsString(data.criterion,true)}}</p>
+</div>
+
+<div mat-dialog-actions class="actions">
+    <button *ngIf="data.canChangeEntry" mat-raised-button color="primary" (click)="getResult()" class="save-button">Save</button>
+</div>
+<button mat-icon-button class="close-button" (click)="onNoClick()"><mat-icon>close</mat-icon></button>

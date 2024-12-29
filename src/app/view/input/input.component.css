@@ -1,0 +1,161 @@
+.chat-container {
+  height: 100%; /* Nutzen Sie die volle Höhe des Viewports */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-window {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  padding-top: 0px;
+  margin-top: 0px;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.chat-input {
+  display: flex;
+  align-items: flex-end;
+  padding: 4px 8px; /* Etwas weniger Padding für mehr Platz */
+  border-top: 1px solid #ccc;
+  background: white;
+  gap: 0px; /* Abstand zwischen den Buttons und dem Eingabefeld */
+}
+
+.icon-button {
+  margin: 5px 10px; /* vertical margin, but no horizontal margin*/
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recordingOngoing{
+  background-color: red;
+}
+
+.text-input {
+  flex: 1; /* Nimmt den verbleibenden Platz ein */
+  margin: 0; /* Kein zusätzlicher Rand */
+}
+
+.text-input textarea {
+  resize: none; /* Deaktiviert manuelles Vergrößern/Verkleinern */
+  overflow-y: auto; /* Ermöglicht automatisches Scrollen bei zu viel Text */
+  height: auto; /* Automatische Höhe je nach Inhalt */
+  line-height: 1.5; /* Line height für bessere Lesbarkeit */
+}
+
+mat-icon {
+  font-size: 24px;
+}
+
+.message-container {
+  display: flex;
+  width: 100%;
+  margin: 5px 0;
+}
+
+.message {
+  padding: 10px 16px;
+  border-radius: 20px;
+  max-width: 70%;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  display: inline-block;
+}
+
+.message-container.mine {
+  justify-content: flex-end;
+}
+
+.message-container.theirs {
+  justify-content: flex-start;
+}
+
+.mine .message {
+  background-color: #dcf8c6;
+  align-self: flex-end;
+}
+
+.theirs .message {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  align-self: flex-start;
+}
+
+
+
+.input-area {
+  display: flex;
+  align-items: center;
+}
+
+input {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.tag-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.document-select-container {
+  /* gap: 16px;
+  padding: 16px; */
+  padding: 4px 16px;
+  margin-bottom: -8px;
+}
+
+.select-form-field {
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 0px;
+} 
+
+
+mat-option {
+  padding: 8px 16px;
+}
+
+mat-option:hover {
+  background-color: #f0f0f0;
+}
+
+mat-label {
+  font-style:italic;
+}
+
+mat-list-item {
+  min-height: auto !important;
+  height: auto !important;
+  align-items: flex-start;
+}
+
+mat-list-item .mat-list-item-content {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: flex-start;
+}
+
+.mat-list-item-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+mat-list-item .mat-list-item-content {
+  padding: 0;
+  margin: 0;
+}
+
+

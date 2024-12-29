@@ -1,0 +1,127 @@
+<button class="close" mat-button (click)="onNoClick()">&nbsp;&nbsp;&nbsp;&nbsp;X&nbsp;&nbsp;&nbsp;&nbsp;</button>
+<h1 mat-dialog-title>Studie: {{data.trial.name}}</h1>
+<div mat-dialog-content>
+    <!-- <mat-expansion-panel *ngIf="data.trial.description != undefined && data.trial.getDescription(data.document.getCriteriaValues()).length > 1" class="description-text" [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Beschreibung:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [innerHtml]="data.trial.getDescription(data.document.getCriteriaValues()) | safeHtml" #description></div>
+    </mat-expansion-panel> -->
+
+    
+    <mat-expansion-panel class="base-info" [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Basic info:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngIf="data.trial.mainPublication != undefined">
+            <div>
+                <b>Main publication:</b>
+                <b class="clickable" (click)="switchToShowPublicationInfoDialog(data.trial.mainPublication, data.allTrials, data.document)" [ngStyle]="{'color': data.trial.mainPublication.getColorCode(data.document.getCriteriaValues())}">&nbsp;&nbsp;&nbsp;&nbsp;{{data.trial.mainPublication.name}}</b>
+            </div>
+            <br>
+            <!-- <p *ngIf="data.trial.mainPublication.publicationInfo.title != undefined && data.trial.mainPublication.publicationInfo.title != ''">
+                Hauptveröffentlichung: {{data.trial.mainPublication.publicationInfo.title}}
+            </p>
+            <div *ngIf="data.trial.mainPublication.publicationInfo.authors != undefined && data.trial.mainPublication.publicationInfo.authors.constructor.name=='Array' && data.trial.mainPublication.publicationInfo.authors.length > 0">
+                <p *ngFor="let authorname of data.trial.mainPublication.publicationInfo.authors" classe="author-name">{{authorname + (authorname == data.trial.mainPublication.publicationInfo.authors[data.trial.mainPublication.publicationInfo.authors.length] ? "" : ", ")}}</p>
+            </div>
+            <p *ngIf="data.trial.mainPublication.publicationInfo.journalName != undefined && data.trial.mainPublication.publicationInfo.journalName != ''">
+                Journal: {{data.trial.mainPublication.publicationInfo.journalName}}
+            </p>
+            <p *ngIf="data.trial.mainPublication.publicationInfo.publicationDate != undefined && data.trial.mainPublication.publicationInfo.publicationDate != ''">
+                Zeitpunkt der Veröffentlichung: {{data.trial.mainPublication.publicationInfo.publicationDate}}
+            </p>
+            <div *ngIf="data.trial.mainPublication.publicationInfo.language != undefined && data.trial.mainPublication.publicationInfo.language.constructor.name=='Array' && data.trial.mainPublication.publicationInfo.language.length > 0">
+                <p *ngFor="let language of data.trial.mainPublication.publicationInfo.language" classe="language">{{language + (language == data.trial.mainPublication.publicationInfo.language[data.trial.mainPublication.publicationInfo.language.length] ? "" : ", ")}}</p>
+            </div>
+            <p *ngIf="data.trial.mainPublication.publicationInfo.publicationLand != undefined && data.trial.mainPublication.publicationInfo.publicationLand != ''">
+                Land: {{data.trial.mainPublication.publicationInfo.publicationLand}}
+            </p>
+            <p *ngIf="data.trial.mainPublication.pmid != undefined && data.trial.mainPublication.pmid != ''">
+                PubMed-ID: <a href="https://pubmed.ncbi.nlm.nih.gov/{{data.trial.mainPublication.pmid}}/" target="_blank" rel="noopener noreferrer">{{data.trial.mainPublication.pmid}}</a>
+            </p>
+            <p *ngIf="data.trial.mainPublication.description != undefined && data.trial.mainPublication.getDescription(data.criteriaValues) != ''">Beschreibung: {{data.trial.mainPublication.getDescription(data.criteriaValues)}}</p> -->
+        </div>
+        <p *ngIf="data.trial.startYear != undefined">Year (start): {{data.trial.startYear}}</p>
+        <p *ngIf="data.trial.prospectiveOrRetrospective != undefined">Type: {{data.trial.prospectiveOrRetrospective}}</p>
+        <p *ngIf="data.trial.randomization != undefined">Randomization: {{data.trial.randomization}}</p>
+        <p *ngIf="data.trial.center != undefined">Center: {{data.trial.center}}</p>
+        <p *ngIf="data.trial.phase != undefined">Phase: {{data.trial.phase}}</p>
+        <p *ngIf="data.trial.totalNumberOfPatients != undefined">Number of patients: {{data.trial.totalNumberOfPatients}}</p>
+        <div *ngIf="data.trial.registryEntries != undefined">
+            <p>Registry entries</p>
+            <ul>
+                <li *ngFor="let registryEntry of data.trial.registryEntries">
+                    <p *ngIf="registryEntry.shortName != undefined && registryEntry.shortName != ''">Short name: {{registryEntry.shortName}}</p>
+                    Name: {{registryEntry.registryName}}<br>
+                    Link: <a href="{{registryEntry.link}}" target="_blank" rel="noopener noreferrer">{{registryEntry.link}}</a><br>
+                </li>
+            </ul>
+        </div>
+        <p *ngIf="data.trial.mainFigureLink">
+            <br><img src="{{data.trial.mainFigureLink}}"><br>
+            (Image source: <a href="{{data.trial.mainFigureLink}}" target="_blank" rel="noopener noreferrer">{{data.trial.mainFigureLink}}</a>)
+        </p>
+        <p *ngIf="data.trial.mainFigureCaption">Description: {{data.trial.mainFigureCaption}}</p>
+        <p><br></p>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="data.trial.trialEndpoints.length > 0 || ((data.trial.arms?.length ?? 0) > 0) || ((data.trial.subGroups?.length ?? 0) > 0)" class="description-text" [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Endpoints:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <!-- <app-trial-endpoint-view [isInDialog]="true" [trial]="data.trial"></app-trial-endpoint-view> WAS NOT COMMENTED -->
+    </mat-expansion-panel>
+
+<!--     
+    <mat-expansion-panel *ngIf="data.trial.allCriteriaFulfilledCondition != undefined" class="condition-text" [expanded]="false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Condition that all criteria are fulfilled:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [innerHtml]="data.trial.allCriteriaFulfilledCondition.toColorCodedHtmlString(data.document.getCriteriaValues()) | safeHtml"></div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel *ngIf="data.trial.mainCriteriaFulfilledCondition != undefined" class="condition-text" [expanded]="false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Condition that main criteria are fulfilled:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [innerHtml]="data.trial.mainCriteriaFulfilledCondition.toColorCodedHtmlString(data.document.getCriteriaValues()) | safeHtml"></div>
+    </mat-expansion-panel> -->
+
+    <mat-expansion-panel *ngIf="data.trial.mainCriteriaFulfilledCondition != undefined" class="condition-text" [expanded]="false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Conditions:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div [innerHtml]="data.trial.mainCriteriaFulfilledCondition.toColorCodedHtmlString(data.document.getCriteriaValues()) | safeHtml"></div>
+    </mat-expansion-panel>
+
+    <!-- <mat-expansion-panel class="tags-list" [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4 class="section-title">Tags:</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <div *ngIf="data.trial.tags != undefined">
+            <p *ngFor="let tag of data.trial.tags">{{tag.name}}</p>
+        </div>
+        <div *ngIf="data.trial.tags == undefined">
+            <p>-- none --</p>
+        </div>
+    </mat-expansion-panel> -->
+    <!-- <mat-divider></mat-divider> -->
+</div>
+<!-- <div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="onNoClick()">Info schließen</button>
+</div> -->

@@ -1,0 +1,41 @@
+.all-criteria {
+  min-height: 32px;
+}
+
+.criterion-title {
+  display: inline-block;
+  padding-top: 2px;
+}
+
+.criterion.set-criterion {
+  background-color: rgb(249, 249, 249);
+}
+
+.unset-criterion-button, .number-of-entries-counter {
+  color: gray;
+}
+
+.unset-criterion-button:hover {
+  background-color: rgb(210, 210, 210);
+}
+
+.criterion.unset-criterion {
+  color: gray;
+}
+
+.criterion {
+  display: inline-block;
+  margin: 2px;
+  padding: 8px;
+  text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  height: auto !important; /* fit height to content  */
+  min-height: unset !important; /* don't use a minimum height */
+  width: auto !important; /* fit width to content  */
+  min-width: unset !important; /* don't use a minimum width */
+  font-size: 12px;
+  font-weight: normal;
+  letter-spacing: 1px;
+  line-height: 1.2;
+}

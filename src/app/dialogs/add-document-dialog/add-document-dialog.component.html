@@ -1,0 +1,145 @@
+<input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)" multiple>
+
+<mat-dialog-content class="dialog-box">
+    <h3 *ngIf="data.createNewDocument">Add Document</h3>
+    <h3 *ngIf="!data.createNewDocument">Edit Document</h3>
+    <!-- <mat-toolbar color="primary">
+        <span *ngIf="docID==undefined">Add Document</span>
+        <span *ngIf="docID!==undefined">Edit Document</span>
+        <span class="spacer"></span>
+        <button mat-icon-button mat-dialog-close>
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar> -->
+
+    <div>
+        <mat-form-field class="full-width">
+            <mat-label>Title</mat-label>
+            <input matInput type="text" [(ngModel)]="title" required>
+        </mat-form-field>
+    </div>
+
+    
+    <div *ngIf="documentType == 'none' && data.createNewDocument" class="action-row">
+        <button mat-button (click)="newEmptyFileButtonClicked()">
+            <mat-icon>insert_drive_file</mat-icon>
+            <span>Empty Document</span>
+        </button>
+    </div>
+
+
+    <div *ngIf="documentType=='upload' || documentType == 'none'" class="action-row">
+        <button mat-button (click)="fileButtonClicked()">
+            <mat-icon>upload_file</mat-icon>
+            <span>Upload File</span>
+        </button>
+        <button mat-icon-button *ngIf="documentType=='upload'" (click)="cancelDocumentButtonClicked()">
+            <mat-icon>cancel</mat-icon>
+        </button>
+    </div>
+
+
+
+    <!-- <div *ngIf="documentType=='camera' || documentType == 'none'">
+        <button mat-icon-button class="icon-button" (click)="cameraButtonClicked()">
+            <mat-icon>photo_camera</mat-icon>
+        </button>
+        <label class="icon-button-label">Take Photo</label>
+        <button mat-icon-button class="icon-button" *ngIf="documentType=='camera'" (click)="cancelDocumentButtonClicked()">
+            <mat-icon>cancel</mat-icon>
+        </button>
+        <div *ngIf="documentType=='camera'">
+            <label class="input-label">FileName: </label><input type="text" [(ngModel)]="cameraFileName">
+        </div>
+        <div class="cameraImage" *ngIf="documentType=='camera'">
+            <img *ngIf="capShotSrc" class="cameraImage" [src]="capShotSrc" alt="Captured Image" />
+        </div>
+    </div>-->
+
+    <div *ngIf="documentType=='microphone' || documentType == 'none'" class="action-row">
+        <button mat-button (click)="micButtonClicked()">
+            <mat-icon>mic</mat-icon>
+            <span>Create Recording</span>
+        </button>
+        <button mat-icon-button *ngIf="documentType=='microphone'" (click)="cancelDocumentButtonClicked()">
+            <mat-icon>cancel</mat-icon>
+        </button>
+    </div>
+
+    <div *ngIf="documentType==='microphone'">
+        <button mat-icon-button  class="icon-button" [ngClass]="{'recordingOngoing': micMode === 'audio'}" (click)="recordingPressed()">
+            <mat-icon>mic</mat-icon>
+        </button>
+    </div>
+
+    <div *ngIf="documentType=='text' || documentType == 'none'" class="action-row">
+        <button mat-button (click)="textButtonClicked()">
+            <mat-icon>text_snippet</mat-icon>
+            <span>Text to be Extracted</span>
+        </button>
+        <button mat-icon-button *ngIf="documentType=='text'" (click)="cancelDocumentButtonClicked()">
+            <mat-icon>cancel</mat-icon>
+        </button>
+    </div>
+
+    <div *ngIf="documentType=='text'">
+        <mat-form-field class="full-width">
+            <textarea matInput [(ngModel)]="textToBeExtracted" placeholder="Enter text here"></textarea>
+        </mat-form-field>
+        <button class="extract-button" mat-stroked-button (click)="extractText()">Extract</button>
+    </div>
+
+    <div *ngIf="selectedFiles">
+        <ul>
+            <li *ngFor="let fileWithValues of selectedFiles">
+                <button mat-icon-button (click)="removeSelectedFileButtonClicked(fileWithValues)">
+                    <mat-icon>cancel</mat-icon>
+                </button>
+                <span>
+                    <label>File Name: </label>
+                    <button mat-button (click)="openMediaViewerDialog(fileWithValues.file)">{{fileWithValues.file.name}}</button>
+                </span>
+                <div>
+                    <label>Type: {{getFileType(fileWithValues.file)}}</label>
+                </div>
+                <div>
+                    <label>Extracted Values:</label>
+                    <mat-progress-spinner *ngIf="loadingFiles.includes(fileWithValues.file)" mode="indeterminate" diameter="30"></mat-progress-spinner>
+                    <app-criteria-listing
+                        [criteriaValues]="fileWithValues.values"
+                        [criteria]="fileWithValues.values.getAllSetCriteria()"
+                        [isInChatWindow]="true">
+                    </app-criteria-listing>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
+    <mat-divider></mat-divider>
+
+    <h3>Files</h3>
+    <ul>
+        <li *ngFor="let fileWithValues of fileList">
+            <button mat-icon-button (click)="removeFileButtonClicked(fileWithValues)">
+                <mat-icon>cancel</mat-icon>
+            </button>
+            <label>File Name:</label>
+            <button mat-button (click)="openMediaViewerDialog(fileWithValues.file)">{{fileWithValues.file.name}}</button><br>
+            <label>Type: {{getFileType(fileWithValues.file)}}</label>
+            <label>Extracted Values:</label>
+            <app-criteria-listing
+                [criteriaValues]="fileWithValues.values"
+                [criteria]="fileWithValues.values.getAllSetCriteria()"
+                [isInChatWindow]="true">
+            </app-criteria-listing>
+        </li>
+    </ul>
+
+</mat-dialog-content>
+
+<div mat-dialog-actions class="actions">
+    <button mat-raised-button color="primary" [ngStyle]="{'visibility': selectedFiles.length === 0 && (title === data.title || data.createNewDocument) ? 'hidden' : 'visible'}" (click)="confirmNewDocument()" class="save-button">Confirm</button>
+</div>
+
+<button mat-icon-button class="close-button" (click)="onNoClick()"><mat-icon>close</mat-icon></button>
