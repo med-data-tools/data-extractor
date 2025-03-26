@@ -29,7 +29,7 @@ Winner of the *best scientific abstract award* at the world cancer congress 2024
 - [https://radioonkologie.insel.ch/de/aktuell/aktuelles/details/news/fabio-dennstaedt-erhaelt-den-best-scientific-study-award-am-world-cancer-congress-2024](https://radioonkologie.insel.ch/de/aktuell/aktuelles/details/news/fabio-dennstaedt-erhaelt-den-best-scientific-study-award-am-world-cancer-congress-2024)
 
 
-## Persons involved in devoloping this prototype
+## Persons involved in developing this prototype
 
 Fabio Dennstädt
 <br>
